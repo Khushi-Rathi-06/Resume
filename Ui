@@ -1,252 +1,131 @@
-st.markdown("""
-<style>
+        opportunity = calculate_opportunity(
 
-.stApp{
-    background:#181421;
-    color:white;
-}
+            differentiation["score"],
 
-.main .block-container{
-    max-width:1250px;
-    padding-top:1.8rem;
-    padding-bottom:2rem;
-}
+            confidence,
 
-h1,h2,h3,h4{
-    color:white;
-}
+            competition_score,
 
-hr{
-    border:1px solid #44345f;
-}
+            len(gaps)
 
-textarea{
-    background:#241B37 !important;
-    color:white !important;
-    border:1px solid #6A4FB3 !important;
-    border-radius:14px !important;
-}
+        )
 
-.stButton>button{
+        opportunity_score = float(opportunity)
 
-    width:100%;
-    height:55px;
+        startup_score = calculate_startup_score(
 
-    background:linear-gradient(90deg,#5B3DF5,#845CFF);
+            confidence,
 
-    color:white;
+            opportunity_score,
 
-    border:none;
+            100 - differentiation["score"],
 
-    border-radius:12px;
+            competition_score,
 
-    font-size:18px;
+            differentiation["score"]
 
-    font-weight:bold;
+        )
 
-}
+        investor = calculate_investor_readiness(
 
-.stButton>button:hover{
+            startup_score,
 
-    background:linear-gradient(90deg,#7252ff,#9c82ff);
+            opportunity_score,
 
-}
+            competition_score,
 
-div[data-testid="stMetric"]{
+            differentiation["score"]
 
-    background:#241B37;
+        )
 
-    border:1px solid #5B3DF5;
-
-    border-radius:14px;
-
-    padding:20px;
-
-}
-
-div[data-testid="stExpander"]{
-
-    background:#241B37;
-
-    border:1px solid #5B3DF5;
-
-    border-radius:12px;
-
-}
-
-.metric-box{
-
-    background:#241B37;
-
-    border:1px solid #5B3DF5;
-
-    border-radius:16px;
-
-    padding:22px;
-
-    text-align:center;
-
-}
-
-.metric-title{
-
-    color:#bda8ff;
-
-    font-size:16px;
-
-}
-
-.metric-value{
-
-    color:white;
-
-    font-size:34px;
-
-    font-weight:bold;
-
-}
-
-.card{
-
-    background:#241B37;
-
-    border:1px solid #5B3DF5;
-
-    border-radius:16px;
-
-    padding:20px;
-
-    margin-top:18px;
-
-    margin-bottom:18px;
-
-}
-
-</style>
-""",unsafe_allow_html=True)
-
-st.markdown("""
-
-<h1 style='text-align:center;font-size:58px;margin-bottom:0px;'>
-
-🚀 StartupGuideAI
-
-</h1>
-
-<p style='text-align:center;
-color:#bda8ff;
-font-size:22px;
-margin-top:0px;
-margin-bottom:35px;'>
-
-From Idea to Insights
-
-</p>
-
-""",unsafe_allow_html=True)
-
-st.divider()
-
-idea = st.text_area(
-
-    "💡 Describe Your Startup Idea",
-
-    placeholder="Example : AI Interview Preparation Platform for College Students",
-
-    height=180
-
-)
-
-analyze = st.button(
-
-    "🚀 Analyze Startup",
-
-    use_container_width=True
-
-)
-
-if analyze:
-
-    if idea.strip()=="":
-
-        st.warning("Please enter your startup idea.")
-
-        st.stop()
-
-    with st.spinner("Analyzing Startup..."):
-
-        summary = generate_summary(idea)
-
-        domain_result = detect_domain(summary)
-
-        domain = domain_result["domain"]
-
-        confidence = domain_result["confidence"]
-
-        competitor = find_similar_startups(summary)
-
-        competitor_data = []
-
-        for company,score,desc,industry,subindustry in zip(
-
-            competitor["Competitors"],
-
-            competitor["Scores"],
-
-            competitor["Descriptions"],
-
-            competitor["Industries"],
-
-            competitor["Subindustries"]
-
-        ):
-
-            competitor_data.append({
-
-                "name":company,
-
-                "score":score,
-
-                "description":desc,
-
-                "industry":industry,
-
-                "subindustry":subindustry
-
-            })
-
-        categorized = categorize_competitors(
-
-            competitor_data,
+        business_models = suggest_business_models(
 
             domain
 
         )
 
-        differentiation = calculate_differentiation(
+        swot = generate_swot(
 
-            summary,
+            gaps,
 
-            competitor["Descriptions"]
-
-        )
-
-        competition_score = differentiation["average_similarity"]
-
-        gaps = identify_market_gap(
-
-            summary,
-
-            competitor["Descriptions"]
+            len(categorized["Direct"]) + len(categorized["Indirect"])
 
         )
 
-        gap_analysis = explain_market_gap(
+        risk = analyse_risk(
 
-            summary,
+            {
 
-            competitor["Competitors"],
+                "startup_score":startup_score
 
-            gaps
+            }
 
         )
+
+        verdict = generate_verdict(
+
+            startup_score,
+
+            competition_score,
+
+            opportunity_score,
+
+            gaps,
+
+            investor["score"],
+
+            differentiation["score"]
+
+        )
+
+        st.divider()
+
+        st.markdown("# 📊 Startup Analysis Dashboard")
+
+        c1,c2 = st.columns(2)
+
+        with c1:
+
+            st.metric(
+
+                "⭐ Startup Score",
+
+                f"{startup_score:.1f}/100"
+
+            )
+
+        with c2:
+
+            st.metric(
+
+                "🚀 Opportunity",
+
+                f"{opportunity_score:.1f}/100"
+
+            )
+
+        c3,c4 = st.columns(2)
+
+        with c3:
+
+            st.metric(
+
+                "⚔ Competition",
+
+                f"{competition_score:.1f}%"
+
+            )
+
+        with c4:
+
+            st.metric(
+
+                "💰 Investor Ready",
+
+                investor["status"]
+
+            )
+
+        st.divider()
+
+        left,right = st.columns([1,1])
