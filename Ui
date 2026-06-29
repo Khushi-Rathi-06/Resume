@@ -1,24 +1,176 @@
-import streamlit as st
+st.markdown("""
 
-from services.startup_summary_service import generate_summary
-from services.domain_service import detect_domain
-from services.similarity_service import find_similar_startups
-from services.competitor_service import categorize_competitors
-from services.differentiation_service import calculate_differentiation
-from services.market_gap_service import identify_market_gap, explain_market_gap
-from services.opportunity_service import calculate_opportunity
-from services.startup_score_service import (
-    calculate_startup_score,
-    analyse_risk
-)
-from services.investor_readiness_service import calculate_investor_readiness
-from services.business_model_service import suggest_business_models
-from services.swot_service import generate_swot
-from services.verdict_service import generate_verdict
+<style>
 
-st.set_page_config(
-    page_title="StartupGuideAI",
-    page_icon="🚀",
-    layout="wide",
-    initial_sidebar_state="collapsed"
-)
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+html,body,[class*="css"]{
+
+font-family:'Poppins',sans-serif;
+
+}
+
+.stApp{
+
+background:#171722;
+
+color:white;
+
+}
+
+.block-container{
+
+padding-top:2rem;
+padding-bottom:2rem;
+padding-left:5%;
+padding-right:5%;
+
+}
+
+section[data-testid="stSidebar"]{
+
+display:none;
+
+}
+
+h1,h2,h3,h4,h5{
+
+color:white;
+
+}
+
+p{
+
+color:#B8B5C8;
+
+}
+
+hr{
+
+border:1px solid #343046;
+
+}
+
+</style>
+
+""",unsafe_allow_html=True)
+
+st.markdown("""
+
+<style>
+
+.main-card{
+
+background:#232233;
+
+border:1px solid #3A3550;
+
+padding:30px;
+
+border-radius:18px;
+
+margin-bottom:25px;
+
+box-shadow:0px 0px 18px rgba(0,0,0,0.25);
+
+}
+
+.metric-card{
+
+background:#232233;
+
+border:1px solid #3A3550;
+
+padding:25px;
+
+border-radius:16px;
+
+text-align:center;
+
+transition:0.3s;
+
+}
+
+.metric-card:hover{
+
+border:1px solid #8E63C7;
+
+transform:translateY(-4px);
+
+}
+
+.small-title{
+
+font-size:15px;
+
+color:#B29BCB;
+
+}
+
+.big-number{
+
+font-size:34px;
+
+font-weight:bold;
+
+color:white;
+
+}
+
+</style>
+
+""",unsafe_allow_html=True)
+
+st.markdown("""
+
+<style>
+
+.stTextArea textarea{
+
+background:#1D1C2B !important;
+
+border:1px solid #3A3550 !important;
+
+border-radius:15px !important;
+
+color:white !important;
+
+padding:20px !important;
+
+font-size:16px !important;
+
+}
+
+.stButton>button{
+
+background:linear-gradient(90deg,#5B448A,#8E63C7);
+
+height:55px;
+
+width:100%;
+
+border:none;
+
+border-radius:12px;
+
+font-size:18px;
+
+font-weight:bold;
+
+color:white;
+
+transition:0.3s;
+
+}
+
+.stButton>button:hover{
+
+transform:scale(1.02);
+
+background:linear-gradient(90deg,#8E63C7,#5B448A);
+
+}
+
+</style>
+
+""",unsafe_allow_html=True)
