@@ -1,51 +1,156 @@
 st.markdown("""
+<style>
 
-<div style="text-align:center;padding-top:20px;padding-bottom:35px;">
+.stApp{
+    background:#181421;
+    color:#F4F4F5;
+}
 
-<h1 style="font-size:52px;">
+.main{
+    background:#181421;
+}
 
-🚀 StartupGuideAI
+.block-container{
+    max-width:1200px;
+    padding-top:2rem;
+    padding-bottom:2rem;
+}
 
-</h1>
+/* ---------------------- */
 
-<h4 style="color:#B29BCB;font-weight:400;">
+.hero{
+    text-align:center;
+    padding:30px 0 20px 0;
+}
 
-From Idea to Insights
+.hero h1{
+    color:white;
+    font-size:52px;
+    margin-bottom:5px;
+}
 
-</h4>
+.hero p{
+    color:#B8A9D9;
+    font-size:20px;
+}
 
-</div>
+/* ---------------------- */
 
-""",unsafe_allow_html=True)
+.section-card{
 
-st.markdown('<div class="main-card">',unsafe_allow_html=True)
+    background:#211A31;
 
-st.subheader("💡 Describe Your Startup Idea")
+    border:1px solid #4F3D78;
 
-idea=st.text_area(
+    border-radius:18px;
 
-"",
+    padding:25px;
 
-placeholder="""
-Example
+    margin-top:20px;
 
-AI Interview Platform
+    margin-bottom:20px;
 
-AI Travel Planner
+    box-shadow:0 0 20px rgba(122,87,194,.15);
 
-AI Legal Assistant
+}
 
-Healthcare SaaS
+/* ---------------------- */
 
-FinTech Platform
+.metric-card{
 
-EdTech Startup
-""",
+    background:#251D38;
 
-height=220
+    border:1px solid #5E4A8A;
 
-)
+    border-radius:15px;
 
-analyze=st.button("🚀 Analyze Startup")
+    padding:22px;
 
-st.markdown("</div>",unsafe_allow_html=True)
+    text-align:center;
+
+    transition:.25s;
+
+}
+
+.metric-card:hover{
+
+    border:1px solid #8E68FF;
+
+    transform:translateY(-3px);
+
+}
+
+/* ---------------------- */
+
+.stButton>button{
+
+    width:100%;
+
+    height:55px;
+
+    background:#6F4DFF;
+
+    color:white;
+
+    border:none;
+
+    border-radius:12px;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+}
+
+.stButton>button:hover{
+
+    background:#845CFF;
+
+}
+
+/* ---------------------- */
+
+textarea{
+
+    background:#15111F !important;
+
+    color:white !important;
+
+}
+
+/* ---------------------- */
+
+div[data-testid="stMetric"]{
+
+    background:#251D38;
+
+    border:1px solid #5E4A8A;
+
+    border-radius:15px;
+
+    padding:18px;
+
+}
+
+/* ---------------------- */
+
+div[data-testid="stExpander"]{
+
+    border:1px solid #4F3D78;
+
+    border-radius:12px;
+
+    background:#211A31;
+
+}
+
+/* ---------------------- */
+
+hr{
+
+    border:1px solid #33274E;
+
+}
+
+</style>
+""", unsafe_allow_html=True)
