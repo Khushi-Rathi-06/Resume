@@ -1,131 +1,71 @@
-        opportunity = calculate_opportunity(
+            st.markdown("## 🏷 Domain")
 
-            differentiation["score"],
+            st.info(
+                f"""
+**Detected Domain**
 
-            confidence,
+{domain}
 
-            competition_score,
+**Confidence**
 
-            len(gaps)
-
-        )
-
-        opportunity_score = float(opportunity)
-
-        startup_score = calculate_startup_score(
-
-            confidence,
-
-            opportunity_score,
-
-            100 - differentiation["score"],
-
-            competition_score,
-
-            differentiation["score"]
-
-        )
-
-        investor = calculate_investor_readiness(
-
-            startup_score,
-
-            opportunity_score,
-
-            competition_score,
-
-            differentiation["score"]
-
-        )
-
-        business_models = suggest_business_models(
-
-            domain
-
-        )
-
-        swot = generate_swot(
-
-            gaps,
-
-            len(categorized["Direct"]) + len(categorized["Indirect"])
-
-        )
-
-        risk = analyse_risk(
-
-            {
-
-                "startup_score":startup_score
-
-            }
-
-        )
-
-        verdict = generate_verdict(
-
-            startup_score,
-
-            competition_score,
-
-            opportunity_score,
-
-            gaps,
-
-            investor["score"],
-
-            differentiation["score"]
-
-        )
-
-        st.divider()
-
-        st.markdown("# 📊 Startup Analysis Dashboard")
-
-        c1,c2 = st.columns(2)
-
-        with c1:
-
-            st.metric(
-
-                "⭐ Startup Score",
-
-                f"{startup_score:.1f}/100"
-
+{confidence:.2f}%
+"""
             )
 
-        with c2:
+            st.markdown("## 🎯 Target Customers")
 
-            st.metric(
+            target_users = []
 
-                "🚀 Opportunity",
+            summary_lower = summary.lower()
 
-                f"{opportunity_score:.1f}/100"
+            if "student" in summary_lower:
+                target_users.append("🎓 Students")
 
-            )
+            if "job" in summary_lower:
+                target_users.append("💼 Job Seekers")
 
-        c3,c4 = st.columns(2)
+            if "college" in summary_lower:
+                target_users.append("🏫 College Students")
 
-        with c3:
+            if "business" in summary_lower:
+                target_users.append("🏢 Businesses")
 
-            st.metric(
+            if "company" in summary_lower:
+                target_users.append("🏭 Companies")
 
-                "⚔ Competition",
+            if "startup" in summary_lower:
+                target_users.append("🚀 Startup Founders")
 
-                f"{competition_score:.1f}%"
+            if len(target_users)==0:
 
-            )
+                target_users.append("👥 General Users")
 
-        with c4:
+            for user in target_users:
 
-            st.metric(
+                st.success(user)
 
-                "💰 Investor Ready",
+            st.markdown("---")
 
-                investor["status"]
+            st.markdown("## 🎯 Market Gaps")
 
-            )
+            for gap in gaps:
 
-        st.divider()
+                st.write(f"✅ {gap}")
 
-        left,right = st.columns([1,1])
+            st.markdown("---")
+
+            st.markdown("## 💼 Business Models")
+
+            for model in business_models:
+
+                if isinstance(model,dict):
+
+                    st.success(model["Business Model"])
+
+                    st.caption(
+                        f"Revenue : {model['Revenue Model']}"
+                    )
+
+                else:
+
+                    st.success(model)
