@@ -1,139 +1,94 @@
-st.divider()
+st.markdown("""
+<style>
 
-# =========================
-# DASHBOARD
-# =========================
+.main{
+    background:#0B1120;
+}
 
-st.header("🚀 Startup Analysis Dashboard")
+.block-container{
+    padding-top:2rem;
+    padding-bottom:2rem;
+}
 
-c1, c2, c3, c4 = st.columns(4)
+div[data-testid="metric-container"]{
+    background:#111827;
+    border:1px solid #334155;
+    border-radius:14px;
+    padding:18px;
+    text-align:center;
+    box-shadow:0 0 10px rgba(0,0,0,0.3);
+}
 
-with c1:
-    st.metric("Startup Score", f"{startup_score:.1f}/100")
+div[data-testid="metric-container"]:hover{
+    border:1px solid #3B82F6;
+}
 
-with c2:
-    st.metric("Opportunity", f"{opportunity_score:.1f}/100")
+.stTextArea textarea{
+    background:#111827;
+    color:white;
+    border-radius:12px;
+    border:1px solid #334155;
+}
 
-with c3:
-    st.metric("Competition", f"{competition_score:.1f}%")
+.stButton>button{
 
-with c4:
-    st.metric("Investor Ready", investor["status"])
+    width:100%;
+    height:52px;
 
+    background:#2563EB;
+    color:white;
 
-st.divider()
+    border:none;
+    border-radius:10px;
 
-left, right = st.columns([2,1])
+    font-size:18px;
+    font-weight:bold;
 
-with left:
+}
 
-    st.subheader("📝 Startup Summary")
+.stButton>button:hover{
 
-    st.info(summary)
+    background:#1D4ED8;
 
-    st.subheader("🏷 Domain")
+}
 
-    st.success(
-        f"{domain}\n\nConfidence : {confidence:.2f}%"
-    )
+.box{
 
-    st.subheader("🎯 Market Gap")
+    background:#111827;
 
-    st.write(gap_analysis)
+    border:1px solid #334155;
 
-with right:
+    border-radius:14px;
 
-    st.subheader("📈 Scores")
+    padding:18px;
 
-    st.progress(startup_score/100)
-    st.write(f"Startup Score : **{startup_score:.1f}**")
+    margin-bottom:20px;
 
-    st.progress(opportunity_score/100)
-    st.write(f"Opportunity : **{opportunity_score:.1f}**")
+}
 
-    st.progress((100-competition_score)/100)
-    st.write(f"Competition : **{competition_score:.1f}**")
+</style>
+""", unsafe_allow_html=True)
 
-    st.progress(investor["score"]/100)
-    st.write(f"Investor Readiness : **{investor['score']:.1f}**")
+st.title("🚀 StartupGuideAI")
 
-
-st.divider()
-
-st.subheader("🏆 Top Competitors")
-
-for category in ["Direct","Indirect","Adjacent"]:
-
-    if len(categorized[category])==0:
-        continue
-
-    st.markdown(f"### {category}")
-
-    for company in categorized[category]:
-
-        with st.expander(
-            f"{company['name']}   ({company['score']:.1f}%)"
-        ):
-
-            st.write("**Industry** :", company["industry"])
-
-            st.write("**Sub Industry** :", company["subindustry"])
-
-            st.write(company["description"])
-
+st.caption("AI Powered Startup Intelligence Platform")
 
 st.divider()
 
-col1,col2 = st.columns(2)
+st.markdown("### 💡 Describe Your Startup")
 
-with col1:
+idea = st.text_area(
 
-    st.subheader("💼 Suggested Business Models")
+    "",
 
-    for model in business_models:
+    placeholder="""
+Example:
 
-        st.success(model)
+An AI platform that prepares students for technical interviews using mock interviews, resume analysis and personalized learning.
+""",
 
-with col2:
+    height=180
 
-    st.subheader("⚠ Risk Analysis")
+)
 
-    st.warning(risk)
-
-
-st.divider()
-
-st.subheader("📊 SWOT Analysis")
-
-a,b = st.columns(2)
-
-with a:
-
-    st.markdown("### 💪 Strengths")
-
-    for item in swot["Strengths"]:
-        st.success(item)
-
-    st.markdown("### 🚀 Opportunities")
-
-    for item in swot["Opportunities"]:
-        st.info(item)
-
-with b:
-
-    st.markdown("### ⚠ Weaknesses")
-
-    for item in swot["Weaknesses"]:
-        st.error(item)
-
-    st.markdown("### 🔥 Threats")
-
-    for item in swot["Threats"]:
-        st.warning(item)
-
-
-st.divider()
-
-st.subheader("✅ Final Verdict")
-
-st.success(verdict)
+analyze = st.button("🚀 Analyze Startup")
