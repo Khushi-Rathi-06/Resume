@@ -1,39 +1,225 @@
-st.divider()
+import streamlit as st
 
-st.subheader("📝 Startup Summary")
-st.write(summary)
+from services.startup_summary_service import generate_summary
+from services.domain_service import detect_domain
+from services.similarity_service import find_similar_startups
+from services.competitor_service import categorize_competitors
+from services.differentiation_service import calculate_differentiation
+from services.market_gap_service import identify_market_gap, explain_market_gap
+from services.opportunity_service import calculate_opportunity
+from services.startup_score_service import (calculate_startup_score,analyse_risk)
+from services.investor_readiness_service import calculate_investor_readiness
+from services.business_model_service import suggest_business_models
+from services.swot_service import generate_swot
+from services.verdict_service import generate_verdict
 
-st.subheader("🏷 Domain")
-st.write(f"**{domain}** ({confidence:.2f}% confidence)")
-
-st.subheader("🏆 Competitors")
-st.json(categorized)
-
-st.subheader("🎯 Market Gaps")
-st.write(gap_analysis)
-
-st.subheader("📈 Opportunity Score")
-st.metric("Opportunity", f"{opportunity_score:.2f}")
-
-st.subheader("⭐ Startup Score")
-st.metric("Startup Score", f"{startup_score:.2f}")
-
-st.subheader("💰 Investor Readiness")
-st.metric(
-    investor["status"],
-    f'{investor["score"]:.2f}'
+st.set_page_config(
+    page_title="StartupGuideAI",
+    page_icon="🚀",
+    layout="wide"
 )
 
-st.subheader("💼 Business Models")
-for model in business_models:
-    st.write("•", model)
+st.markdown("""
+<style>
 
-st.subheader("⚠ Risk Analysis")
-st.write(risk)
+.main{
+    background:#0E1117;
+}
 
-st.subheader("📊 SWOT")
-st.json(swot)
+.block-container{
+    padding-top:2rem;
+}
 
-st.subheader("✅ Final Verdict")
-st.success(verdict)
+.stButton>button{
+    width:100%;
+    border-radius:10px;
+    height:50px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.card{
+    padding:18px;
+    border-radius:12px;
+    background:#1e293b;
+    margin-bottom:15px;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+st.title("🚀 StartupGuideAI")
+
+st.caption("From Idea To Insights")
+
+st.divider()
+
+idea = st.text_area(
+    "Describe your Startup Idea",
+    placeholder="Example : AI Interview Preparation Platform for College Students",
+    height=150
+)
+
+analyze = st.button("Analyze Startup")
+
+if analyze:
+
+    if idea.strip()=="":
+
+        st.warning("Please enter your startup idea.")
+
+        st.stop()
+
+    with st.spinner("Analyzing Startup..."):
+
+        st.write('1')
+        summary = generate_summary(idea)
+        st.write('2')
+
+        domain_result = detect_domain(summary)
+        st.write('3')
+
+        domain = domain_result["domain"]
+
+        confidence = domain_result["confidence"]
+
+        competitor = find_similar_startups(summary)
+        st.write('4')
+
+        competitor_data = []
+
+        for company,score,desc,industry,subindustry in zip(
+
+            competitor["Competitors"],
+            competitor["Scores"],
+            competitor["Descriptions"],
+            competitor["Industries"],
+            competitor["Subindustries"]
+
+        ):
+
+            competitor_data.append({
+
+                "name":company,
+                "score":score,
+                "description":desc,
+                "industry":industry,
+                "subindustry":subindustry
+
+            })
+
+        categorized = categorize_competitors(
+            competitor_data,
+            domain
+        )
+        st.write('5')
+
+        differentiation = calculate_differentiation(summary, competitor["Descriptions"])
+        st.write('6')
+
+        competition_score = differentiation['average_similarity']
+
+       
         
+
+        gaps = identify_market_gap(
+            summary,
+            competitor["Descriptions"]
+        )
+        st.write('7')
+
+        gap_analysis = explain_market_gap(
+            summary,
+            competitor["Competitors"],
+            gaps
+        )
+        st.write('8')
+
+        opportunity = calculate_opportunity(differentiation['score'], confidence, competition_score, len(gaps))
+        st.write('9')
+
+        opportunity_score = float(opportunity)
+
+        startup_score = calculate_startup_score(
+
+            confidence,
+            opportunity_score,
+            100-differentiation["score"],
+            competition_score,
+            differentiation["score"]
+
+        )
+        st.write('10')
+
+        investor = calculate_investor_readiness(
+
+            startup_score,
+            opportunity_score,
+            competition_score,
+            differentiation["score"]
+
+        )
+        st.write('11')
+
+        business_models = suggest_business_models(domain)
+
+        swot = generate_swot(
+            gaps,
+            len(categorized["Direct"]) + len(categorized["Indirect"])
+        )
+
+        risk = analyse_risk(
+            {"startup_score":startup_score}
+        )
+
+        verdict = generate_verdict(
+
+            startup_score,
+            competition_score,
+            opportunity_score,
+            gaps,
+            investor['score'],
+            differentiation['score']
+
+        )
+        st.write('12')
+        st.divider()
+
+        st.subheader("📝 Startup Summary")
+        st.write(summary)
+
+        st.subheader("🏷 Domain")
+        st.write(f"**{domain}** ({confidence:.2f}% confidence)")
+
+        st.subheader("🏆 Competitors")
+        st.json(categorized)
+
+        st.subheader("🎯 Market Gaps")
+        st.write(gap_analysis)
+
+        st.subheader("📈 Opportunity Score")
+        st.metric("Opportunity", f"{opportunity_score:.2f}")
+
+        st.subheader("⭐ Startup Score")
+        st.metric("Startup Score", f"{startup_score:.2f}")
+
+        st.subheader("💰 Investor Readiness")
+        st.metric(
+            investor["status"],
+            f'{investor["score"]:.2f}'
+        )
+
+        st.subheader("💼 Business Models")
+        for model in business_models:
+            st.write("•", model)
+
+        st.subheader("⚠ Risk Analysis")
+        st.write(risk)
+
+        st.subheader("📊 SWOT")
+        st.json(swot)
+
+        st.subheader("✅ Final Verdict")
+        st.success(verdict)
+
+
