@@ -7,36 +7,32 @@ st.markdown("""
 }
 
 .main .block-container{
-    max-width:1200px;
-    padding-top:2rem;
+    max-width:1250px;
+    padding-top:1.8rem;
     padding-bottom:2rem;
 }
 
-h1,h2,h3{
+h1,h2,h3,h4{
     color:white;
 }
 
 hr{
-    border:1px solid #4b3d69;
+    border:1px solid #44345f;
 }
-
-/* Text Area */
 
 textarea{
-    background:#221A33 !important;
+    background:#241B37 !important;
     color:white !important;
     border:1px solid #6A4FB3 !important;
-    border-radius:12px !important;
+    border-radius:14px !important;
 }
-
-/* Button */
 
 .stButton>button{
 
     width:100%;
     height:55px;
 
-    background:linear-gradient(90deg,#5B3DF5,#8A63FF);
+    background:linear-gradient(90deg,#5B3DF5,#845CFF);
 
     color:white;
 
@@ -52,11 +48,9 @@ textarea{
 
 .stButton>button:hover{
 
-    background:linear-gradient(90deg,#7554FF,#A07EFF);
+    background:linear-gradient(90deg,#7252ff,#9c82ff);
 
 }
-
-/* Metrics */
 
 div[data-testid="stMetric"]{
 
@@ -64,13 +58,11 @@ div[data-testid="stMetric"]{
 
     border:1px solid #5B3DF5;
 
-    border-radius:15px;
+    border-radius:14px;
 
     padding:20px;
 
 }
-
-/* Expanders */
 
 div[data-testid="stExpander"]{
 
@@ -82,13 +74,179 @@ div[data-testid="stExpander"]{
 
 }
 
-/* Success */
+.metric-box{
 
-div[data-testid="stAlert"]{
+    background:#241B37;
 
-    border-radius:12px;
+    border:1px solid #5B3DF5;
+
+    border-radius:16px;
+
+    padding:22px;
+
+    text-align:center;
+
+}
+
+.metric-title{
+
+    color:#bda8ff;
+
+    font-size:16px;
+
+}
+
+.metric-value{
+
+    color:white;
+
+    font-size:34px;
+
+    font-weight:bold;
+
+}
+
+.card{
+
+    background:#241B37;
+
+    border:1px solid #5B3DF5;
+
+    border-radius:16px;
+
+    padding:20px;
+
+    margin-top:18px;
+
+    margin-bottom:18px;
 
 }
 
 </style>
-""", unsafe_allow_html=True)
+""",unsafe_allow_html=True)
+
+st.markdown("""
+
+<h1 style='text-align:center;font-size:58px;margin-bottom:0px;'>
+
+🚀 StartupGuideAI
+
+</h1>
+
+<p style='text-align:center;
+color:#bda8ff;
+font-size:22px;
+margin-top:0px;
+margin-bottom:35px;'>
+
+From Idea to Insights
+
+</p>
+
+""",unsafe_allow_html=True)
+
+st.divider()
+
+idea = st.text_area(
+
+    "💡 Describe Your Startup Idea",
+
+    placeholder="Example : AI Interview Preparation Platform for College Students",
+
+    height=180
+
+)
+
+analyze = st.button(
+
+    "🚀 Analyze Startup",
+
+    use_container_width=True
+
+)
+
+if analyze:
+
+    if idea.strip()=="":
+
+        st.warning("Please enter your startup idea.")
+
+        st.stop()
+
+    with st.spinner("Analyzing Startup..."):
+
+        summary = generate_summary(idea)
+
+        domain_result = detect_domain(summary)
+
+        domain = domain_result["domain"]
+
+        confidence = domain_result["confidence"]
+
+        competitor = find_similar_startups(summary)
+
+        competitor_data = []
+
+        for company,score,desc,industry,subindustry in zip(
+
+            competitor["Competitors"],
+
+            competitor["Scores"],
+
+            competitor["Descriptions"],
+
+            competitor["Industries"],
+
+            competitor["Subindustries"]
+
+        ):
+
+            competitor_data.append({
+
+                "name":company,
+
+                "score":score,
+
+                "description":desc,
+
+                "industry":industry,
+
+                "subindustry":subindustry
+
+            })
+
+        categorized = categorize_competitors(
+
+            competitor_data,
+
+            domain
+
+        )
+
+        differentiation = calculate_differentiation(
+
+            summary,
+
+            competitor["Descriptions"]
+
+        )
+
+        competition_score = differentiation["average_similarity"]
+
+        gaps = identify_market_gap(
+
+            summary,
+
+            competitor["Descriptions"]
+
+        )
+
+        gap_analysis = explain_market_gap(
+
+            summary,
+
+            competitor["Competitors"],
+
+            gaps
+
+        )
