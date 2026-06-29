@@ -1,71 +1,86 @@
-            st.markdown("## 🏷 Domain")
+            st.markdown("## 🏆 Competitor Analysis")
 
-            st.info(
-                f"""
-**Detected Domain**
+            for category in ["Direct", "Indirect", "Adjacent"]:
 
-{domain}
+                if len(categorized[category]) == 0:
+                    continue
 
-**Confidence**
+                st.markdown(f"### {category}")
 
-{confidence:.2f}%
-"""
-            )
+                for company in categorized[category][:5]:
 
-            st.markdown("## 🎯 Target Customers")
+                    with st.expander(
+                        f"{company['name']}  •  {company['score']:.1f}%"
+                    ):
 
-            target_users = []
+                        st.write(
+                            f"**Industry:** {company['industry']}"
+                        )
 
-            summary_lower = summary.lower()
+                        st.write(
+                            f"**Sub Industry:** {company['subindustry']}"
+                        )
 
-            if "student" in summary_lower:
-                target_users.append("🎓 Students")
-
-            if "job" in summary_lower:
-                target_users.append("💼 Job Seekers")
-
-            if "college" in summary_lower:
-                target_users.append("🏫 College Students")
-
-            if "business" in summary_lower:
-                target_users.append("🏢 Businesses")
-
-            if "company" in summary_lower:
-                target_users.append("🏭 Companies")
-
-            if "startup" in summary_lower:
-                target_users.append("🚀 Startup Founders")
-
-            if len(target_users)==0:
-
-                target_users.append("👥 General Users")
-
-            for user in target_users:
-
-                st.success(user)
+                        st.write(company["description"])
 
             st.markdown("---")
 
-            st.markdown("## 🎯 Market Gaps")
+            st.markdown("## ⚠ Risk Analysis")
 
-            for gap in gaps:
+            if isinstance(risk, dict):
 
-                st.write(f"✅ {gap}")
+                for key, value in risk.items():
 
-            st.markdown("---")
+                    st.warning(f"**{key.title()}** : {value}")
 
-            st.markdown("## 💼 Business Models")
+            else:
 
-            for model in business_models:
+                st.warning(risk)
 
-                if isinstance(model,dict):
+        st.divider()
 
-                    st.success(model["Business Model"])
+        st.markdown("## 📊 SWOT Analysis")
 
-                    st.caption(
-                        f"Revenue : {model['Revenue Model']}"
-                    )
+        s1, s2 = st.columns(2)
 
-                else:
+        with s1:
 
-                    st.success(model)
+            st.markdown("### 💪 Strengths")
+
+            for item in swot["Strengths"]:
+
+                st.success(item)
+
+            st.markdown("### 🚀 Opportunities")
+
+            for item in swot["Opportunities"]:
+
+                st.info(item)
+
+        with s2:
+
+            st.markdown("### ⚠ Weaknesses")
+
+            for item in swot["Weaknesses"]:
+
+                st.error(item)
+
+            st.markdown("### 🔥 Threats")
+
+            for item in swot["Threats"]:
+
+                st.warning(item)
+
+        st.divider()
+
+        st.markdown("## ✅ Final Verdict")
+
+        if isinstance(verdict, list):
+
+            for point in verdict:
+
+                st.success(point)
+
+        else:
+
+            st.success(verdict)
