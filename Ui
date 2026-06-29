@@ -3,92 +3,40 @@ st.markdown("""
 
 .stApp{
     background:#181421;
-    color:#F4F4F5;
+    color:white;
 }
 
-.main{
-    background:#181421;
-}
-
-.block-container{
+.main .block-container{
     max-width:1200px;
     padding-top:2rem;
     padding-bottom:2rem;
 }
 
-/* ---------------------- */
-
-.hero{
-    text-align:center;
-    padding:30px 0 20px 0;
-}
-
-.hero h1{
+h1,h2,h3{
     color:white;
-    font-size:52px;
-    margin-bottom:5px;
 }
 
-.hero p{
-    color:#B8A9D9;
-    font-size:20px;
+hr{
+    border:1px solid #4b3d69;
 }
 
-/* ---------------------- */
+/* Text Area */
 
-.section-card{
-
-    background:#211A31;
-
-    border:1px solid #4F3D78;
-
-    border-radius:18px;
-
-    padding:25px;
-
-    margin-top:20px;
-
-    margin-bottom:20px;
-
-    box-shadow:0 0 20px rgba(122,87,194,.15);
-
+textarea{
+    background:#221A33 !important;
+    color:white !important;
+    border:1px solid #6A4FB3 !important;
+    border-radius:12px !important;
 }
 
-/* ---------------------- */
-
-.metric-card{
-
-    background:#251D38;
-
-    border:1px solid #5E4A8A;
-
-    border-radius:15px;
-
-    padding:22px;
-
-    text-align:center;
-
-    transition:.25s;
-
-}
-
-.metric-card:hover{
-
-    border:1px solid #8E68FF;
-
-    transform:translateY(-3px);
-
-}
-
-/* ---------------------- */
+/* Button */
 
 .stButton>button{
 
     width:100%;
-
     height:55px;
 
-    background:#6F4DFF;
+    background:linear-gradient(90deg,#5B3DF5,#8A63FF);
 
     color:white;
 
@@ -104,51 +52,41 @@ st.markdown("""
 
 .stButton>button:hover{
 
-    background:#845CFF;
+    background:linear-gradient(90deg,#7554FF,#A07EFF);
 
 }
 
-/* ---------------------- */
-
-textarea{
-
-    background:#15111F !important;
-
-    color:white !important;
-
-}
-
-/* ---------------------- */
+/* Metrics */
 
 div[data-testid="stMetric"]{
 
-    background:#251D38;
+    background:#241B37;
 
-    border:1px solid #5E4A8A;
+    border:1px solid #5B3DF5;
 
     border-radius:15px;
 
-    padding:18px;
+    padding:20px;
 
 }
 
-/* ---------------------- */
+/* Expanders */
 
 div[data-testid="stExpander"]{
 
-    border:1px solid #4F3D78;
+    background:#241B37;
+
+    border:1px solid #5B3DF5;
 
     border-radius:12px;
 
-    background:#211A31;
-
 }
 
-/* ---------------------- */
+/* Success */
 
-hr{
+div[data-testid="stAlert"]{
 
-    border:1px solid #33274E;
+    border-radius:12px;
 
 }
 
