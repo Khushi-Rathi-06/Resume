@@ -1,176 +1,51 @@
 st.markdown("""
 
-<style>
+<div style="text-align:center;padding-top:20px;padding-bottom:35px;">
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+<h1 style="font-size:52px;">
 
-html,body,[class*="css"]{
+🚀 StartupGuideAI
 
-font-family:'Poppins',sans-serif;
+</h1>
 
-}
+<h4 style="color:#B29BCB;font-weight:400;">
 
-.stApp{
+From Idea to Insights
 
-background:#171722;
+</h4>
 
-color:white;
-
-}
-
-.block-container{
-
-padding-top:2rem;
-padding-bottom:2rem;
-padding-left:5%;
-padding-right:5%;
-
-}
-
-section[data-testid="stSidebar"]{
-
-display:none;
-
-}
-
-h1,h2,h3,h4,h5{
-
-color:white;
-
-}
-
-p{
-
-color:#B8B5C8;
-
-}
-
-hr{
-
-border:1px solid #343046;
-
-}
-
-</style>
+</div>
 
 """,unsafe_allow_html=True)
 
-st.markdown("""
+st.markdown('<div class="main-card">',unsafe_allow_html=True)
 
-<style>
+st.subheader("💡 Describe Your Startup Idea")
 
-.main-card{
+idea=st.text_area(
 
-background:#232233;
+"",
 
-border:1px solid #3A3550;
+placeholder="""
+Example
 
-padding:30px;
+AI Interview Platform
 
-border-radius:18px;
+AI Travel Planner
 
-margin-bottom:25px;
+AI Legal Assistant
 
-box-shadow:0px 0px 18px rgba(0,0,0,0.25);
+Healthcare SaaS
 
-}
+FinTech Platform
 
-.metric-card{
+EdTech Startup
+""",
 
-background:#232233;
+height=220
 
-border:1px solid #3A3550;
+)
 
-padding:25px;
+analyze=st.button("🚀 Analyze Startup")
 
-border-radius:16px;
-
-text-align:center;
-
-transition:0.3s;
-
-}
-
-.metric-card:hover{
-
-border:1px solid #8E63C7;
-
-transform:translateY(-4px);
-
-}
-
-.small-title{
-
-font-size:15px;
-
-color:#B29BCB;
-
-}
-
-.big-number{
-
-font-size:34px;
-
-font-weight:bold;
-
-color:white;
-
-}
-
-</style>
-
-""",unsafe_allow_html=True)
-
-st.markdown("""
-
-<style>
-
-.stTextArea textarea{
-
-background:#1D1C2B !important;
-
-border:1px solid #3A3550 !important;
-
-border-radius:15px !important;
-
-color:white !important;
-
-padding:20px !important;
-
-font-size:16px !important;
-
-}
-
-.stButton>button{
-
-background:linear-gradient(90deg,#5B448A,#8E63C7);
-
-height:55px;
-
-width:100%;
-
-border:none;
-
-border-radius:12px;
-
-font-size:18px;
-
-font-weight:bold;
-
-color:white;
-
-transition:0.3s;
-
-}
-
-.stButton>button:hover{
-
-transform:scale(1.02);
-
-background:linear-gradient(90deg,#8E63C7,#5B448A);
-
-}
-
-</style>
-
-""",unsafe_allow_html=True)
+st.markdown("</div>",unsafe_allow_html=True)
