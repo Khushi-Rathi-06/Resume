@@ -1,87 +1,132 @@
-        dashboard_cards(
+st.markdown("""
+<style>
 
-            startup_score,
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-            opportunity_score,
+html, body, [class*="css"], .stApp{
+    font-family:'Inter',sans-serif;
+    background:#F7F8FA;
+    color:#111827;
+}
 
-            competition_score,
+.main .block-container{
+    max-width:1250px;
+    padding-top:2rem;
+    padding-bottom:4rem;
+}
 
-            investor
+h1,h2,h3,h4,h5,h6{
+    color:#111827;
+    font-weight:700;
+}
 
-        )
+/* Hide Streamlit branding */
 
-        row1 = st.columns(2)
+#MainMenu{
+    visibility:hidden;
+}
 
-        with row1[0]:
+footer{
+    visibility:hidden;
+}
 
-            domain_card(
+header{
+    visibility:hidden;
+}
 
-                domain,
+/* Hero */
 
-                confidence
+.hero{
+    text-align:center;
+    padding:70px 0 55px 0;
+}
 
-            )
+.hero-title{
+    font-size:68px;
+    font-weight:800;
+    letter-spacing:-2px;
+    color:#111827;
+}
 
-        with row1[1]:
+.hero-sub{
+    margin-top:10px;
+    font-size:22px;
+    color:#6B7280;
+    font-weight:400;
+}
 
-            target_customer_card(
+/* Section */
 
-                summary
+.section-title{
+    font-size:32px;
+    font-weight:700;
+    margin-top:25px;
+    margin-bottom:18px;
+    color:#111827;
+}
 
-            )
+/* Cards */
 
-        st.divider()
+.card{
+    background:white;
+    border:1px solid #E5E7EB;
+    border-radius:18px;
+    padding:22px;
+    box-shadow:0 3px 12px rgba(0,0,0,.05);
+    margin-bottom:18px;
+}
 
-        competitor_cards(
+/* Metric Card */
 
-            categorized
+.metric-title{
+    font-size:15px;
+    color:#6B7280;
+    margin-bottom:12px;
+}
 
-        )
+.metric-value{
+    font-size:42px;
+    font-weight:800;
+    color:#111827;
+}
 
-        st.divider()
+/* Text Area */
 
-        row2 = st.columns(2)
+textarea{
+    border-radius:14px !important;
+    border:1px solid #D1D5DB !important;
+}
 
-        with row2[0]:
+/* Button */
 
-            market_gap_card(
+.stButton>button{
 
-                gaps
+    width:220px;
 
-            )
+    display:block;
 
-        with row2[1]:
+    margin:auto;
 
-            business_model_cards(
+    background:#2563EB;
 
-                business_models
+    color:white;
 
-            )
+    border:none;
 
-        st.divider()
+    border-radius:12px;
 
-        row3 = st.columns(2)
+    height:50px;
 
-        with row3[0]:
+    font-size:17px;
 
-            swot_grid(
+    font-weight:600;
+}
 
-                swot
+.stButton>button:hover{
 
-            )
+    background:#1D4ED8;
 
-        with row3[1]:
+}
 
-            risk_card(
-
-                risk
-
-            )
-
-        st.divider()
-
-        verdict_card(
-
-            verdict
-
-        )
+</style>
+""", unsafe_allow_html=True)
