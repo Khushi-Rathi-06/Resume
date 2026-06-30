@@ -1,106 +1,34 @@
-    st.markdown("""
-    <style>
+def idea_box():
 
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    st.markdown(
+        '<div class="section-title">Describe Your Startup Idea</div>',
+        unsafe_allow_html=True
+    )
 
-    html, body, [class*="css"], .stApp{
-        font-family:'Inter',sans-serif;
-        background:#F7F8FA;
-        color:#111827;
-    }
+    idea = st.text_area(
+        "",
+        placeholder="""
+Example:
 
-    .main .block-container{
-        max-width:1250px;
-        padding-top:2rem;
-        padding-bottom:4rem;
-    }
+AI powered interview preparation platform for college students
+that provides mock interviews, resume analysis and personalized
+learning roadmap.
+        """,
+        height=110,
+        label_visibility="collapsed"
+    )
 
-    h1,h2,h3,h4,h5,h6{
-        color:#111827;
-        font-weight:700;
-    }
+    st.write("")
 
-    #MainMenu{
-        visibility:hidden;
-    }
+    c1, c2, c3 = st.columns([2.2, 1, 2.2])
 
-    footer{
-        visibility:hidden;
-    }
+    with c2:
+        analyze = st.button(
+            "Analyze Startup",
+            use_container_width=True
+        )
 
-    header{
-        visibility:hidden;
-    }
+    st.write("")
+    st.write("")
 
-    .hero{
-        text-align:center;
-        padding:70px 0 55px 0;
-    }
-
-    .hero-title{
-        font-size:68px;
-        font-weight:800;
-        letter-spacing:-2px;
-        color:#111827;
-    }
-
-    .hero-sub{
-        margin-top:10px;
-        font-size:22px;
-        color:#6B7280;
-        font-weight:400;
-    }
-
-    .section-title{
-        font-size:32px;
-        font-weight:700;
-        margin-top:25px;
-        margin-bottom:18px;
-        color:#111827;
-    }
-
-    .card{
-        background:white;
-        border:1px solid #E5E7EB;
-        border-radius:18px;
-        padding:22px;
-        box-shadow:0 3px 12px rgba(0,0,0,.05);
-        margin-bottom:18px;
-    }
-
-    .metric-title{
-        font-size:15px;
-        color:#6B7280;
-        margin-bottom:12px;
-    }
-
-    .metric-value{
-        font-size:42px;
-        font-weight:800;
-        color:#111827;
-    }
-
-    textarea{
-        border-radius:14px !important;
-        border:1px solid #D1D5DB !important;
-    }
-
-    .stButton>button{
-        width:220px;
-        display:block;
-        margin:auto;
-        background:#2563EB;
-        color:white;
-        border:none;
-        border-radius:12px;
-        height:50px;
-        font-size:17px;
-        font-weight:600;
-    }
-
-    .stButton>button:hover{
-        background:#1D4ED8;
-    }
-
-    </style>
-    """, unsafe_allow_html=True)
+    return idea, analyze
