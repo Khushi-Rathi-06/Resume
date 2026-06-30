@@ -1,136 +1,211 @@
-def domain_card(domain, confidence):
+def dashboard_cards(
+    startup_score,
+    opportunity_score,
+    competition_score,
+    investor
+):
 
-    st.markdown(f"""
-    <div class="card">
+    st.markdown("## 📊 Dashboard")
 
-    <h3>🏷 Domain</h3>
+    row1 = st.columns(2)
 
-    <h2 style="color:#6C63FF;margin-bottom:10px;">
-    {domain}
-    </h2>
+    with row1[0]:
+        metric_card(
+            "⭐ Startup Score",
+            f"{startup_score:.1f}/100"
+        )
 
-    <p><b>Confidence :</b> {confidence:.2f}%</p>
+    with row1[1]:
+        metric_card(
+            "🚀 Opportunity",
+            f"{opportunity_score:.1f}/100"
+        )
 
-    </div>
-    """, unsafe_allow_html=True)
+    row2 = st.columns(2)
 
+    with row2[0]:
+        metric_card(
+            "⚔ Competition",
+            f"{competition_score:.1f}%"
+        )
 
-def target_customer_card(summary):
-
-    summary = summary.lower()
-
-    customers = []
-
-    if "student" in summary:
-        customers.append("🎓 Students")
-
-    if "college" in summary:
-        customers.append("🏫 College Students")
-
-    if "job" in summary:
-        customers.append("💼 Job Seekers")
-
-    if "business" in summary:
-        customers.append("🏢 Businesses")
-
-    if "startup" in summary:
-        customers.append("🚀 Startup Founders")
-
-    if "company" in summary:
-        customers.append("🏭 Companies")
-
-    if len(customers) == 0:
-        customers.append("👥 General Users")
-
-    html = """
-
-    <div class="card">
-
-    <h3>👥 Target Customers</h3>
-
-    <ul>
-
-    """
-
-    for user in customers:
-
-        html += f"<li>{user}</li>"
-
-    html += """
-
-    </ul>
-
-    </div>
-
-    """
-
-    st.markdown(html, unsafe_allow_html=True)
+    with row2[1]:
+        metric_card(
+            "💰 Investor Ready",
+            investor["status"]
+        )
 
 
-def market_gap_card(gaps):
+def business_model_cards(models):
 
-    html = """
+    st.markdown("## 💼 Business Models")
 
-    <div class="card">
+    cols = st.columns(2)
 
-    <h3>🎯 Market Gaps</h3>
+    i = 0
 
-    <ul>
+    for model in models:
 
-    """
+        with cols[i % 2]:
 
-    for gap in gaps:
+            if isinstance(model, dict):
 
-        html += f"<li>{gap}</li>"
+                business = model.get(
+                    "Business Model",
+                    "Business Model"
+                )
 
-    html += """
-
-    </ul>
-
-    </div>
-
-    """
-
-    st.markdown(html, unsafe_allow_html=True)
-
-
-def competitor_cards(categorized):
-
-    st.markdown("## 🏆 Top Competitors")
-
-    for category in ["Direct","Indirect","Adjacent"]:
-
-        if len(categorized[category]) == 0:
-            continue
-
-        st.markdown(f"### {category}")
-
-        cols = st.columns(2)
-
-        index = 0
-
-        for company in categorized[category][:4]:
-
-            with cols[index % 2]:
+                revenue = model.get(
+                    "Revenue Model",
+                    "-"
+                )
 
                 st.markdown(f"""
 
                 <div class="card">
 
-                <h4>{company['name']}</h4>
-
-                <p><b>Similarity :</b> {company['score']:.1f}%</p>
-
-                <p><b>Industry :</b> {company['industry']}</p>
-
-                <p><b>Sub Industry :</b> {company['subindustry']}</p>
+                <h4>{business}</h4>
 
                 <hr>
 
-                <p>{company['description']}</p>
+                <b>Revenue Model</b>
+
+                <p>{revenue}</p>
 
                 </div>
 
                 """, unsafe_allow_html=True)
 
-            index += 1
+            else:
+
+                st.markdown(f"""
+
+                <div class="card">
+
+                <h4>{model}</h4>
+
+                </div>
+
+                """, unsafe_allow_html=True)
+
+        i += 1
+
+
+def risk_card(risk):
+
+    st.markdown("## ⚠ Risk Analysis")
+
+    if isinstance(risk, dict):
+
+        html = """
+
+        <div class="card">
+
+        """
+
+        for key, value in risk.items():
+
+            html += f"""
+
+            <p>
+
+            <b>{key.title()}</b>
+
+            <br>
+
+            {value}
+
+            </p>
+
+            """
+
+        html += "</div>"
+
+        st.markdown(
+            html,
+            unsafe_allow_html=True
+        )
+
+    else:
+
+        st.markdown(f"""
+
+        <div class="card">
+
+        {risk}
+
+        </div>
+
+        """, unsafe_allow_html=True)
+
+
+def swot_grid(swot):
+
+    st.markdown("## 📊 SWOT Analysis")
+
+    c1, c2 = st.columns(2)
+
+    with c1:
+
+        st.markdown("### 💪 Strengths")
+
+        st.markdown('<div class="card">', unsafe_allow_html=True)
+
+        for item in swot["Strengths"]:
+            st.write("✅", item)
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        st.markdown("### 🚀 Opportunities")
+
+        st.markdown('<div class="card">', unsafe_allow_html=True)
+
+        for item in swot["Opportunities"]:
+            st.write("📈", item)
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    with c2:
+
+        st.markdown("### ⚠ Weaknesses")
+
+        st.markdown('<div class="card">', unsafe_allow_html=True)
+
+        for item in swot["Weaknesses"]:
+            st.write("❌", item)
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        st.markdown("### 🔥 Threats")
+
+        st.markdown('<div class="card">', unsafe_allow_html=True)
+
+        for item in swot["Threats"]:
+            st.write("⚠️", item)
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
+
+def verdict_card(verdict):
+
+    st.markdown("## ✅ Final Verdict")
+
+    st.markdown(
+        '<div class="card">',
+        unsafe_allow_html=True
+    )
+
+    if isinstance(verdict, list):
+
+        for point in verdict:
+
+            st.write("✔", point)
+
+    else:
+
+        st.write(verdict)
+
+    st.markdown(
+        "</div>",
+        unsafe_allow_html=True
+    )
