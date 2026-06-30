@@ -1,147 +1,4 @@
-import streamlit as st
-
-from ui import (
-    load_css,
-    hero,
-    idea_box,
-    dashboard_cards,
-    domain_card,
-    target_customer_card,
-    market_gap_card,
-    competitor_cards,
-    business_model_cards,
-    risk_card,
-    swot_grid,
-    verdict_card
-)
-
-st.set_page_config(
-    page_title="StartupGuideAI",
-    page_icon="🚀",
-    layout="wide"
-)
-
-load_css()
-
-hero()
-
-idea, analyze = idea_box()
-
-if analyze:
-
-    if idea.strip() == "":
-
-        st.warning("Please enter your startup idea.")
-
-        st.stop()
-
-    with st.spinner("Analyzing Startup..."):
-
-        summary = generate_summary(idea)
-
-        domain_result = detect_domain(summary)
-
-        domain = domain_result["domain"]
-
-        confidence = domain_result["confidence"]
-
-        competitor = find_similar_startups(summary)
-
-        competitor_data = []
-
-        for company, score, desc, industry, subindustry in zip(
-
-            competitor["Competitors"],
-
-            competitor["Scores"],
-
-            competitor["Descriptions"],
-
-            competitor["Industries"],
-
-            competitor["Subindustries"]
-
-        ):
-
-            competitor_data.append({
-
-                "name": company,
-
-                "score": score,
-
-                "description": desc,
-
-                "industry": industry,
-
-                "subindustry": subindustry
-
-            })
-
-        categorized = categorize_competitors(
-
-            competitor_data,
-
-            domain
-
-        )
-
-        differentiation = calculate_differentiation(
-
-            summary,
-
-            competitor["Descriptions"]
-
-        )
-
-        competition_score = differentiation["average_similarity"]
-
-        gaps = identify_market_gap(
-
-            summary,
-
-            competitor["Descriptions"]
-
-        )
-
-        gap_analysis = explain_market_gap(
-
-            summary,
-
-            competitor["Competitors"],
-
-            gaps
-
-        )
-
-        opportunity = calculate_opportunity(
-
-            differentiation["score"],
-
-            confidence,
-
-            competition_score,
-
-            len(gaps)
-
-        )
-
-        opportunity_score = float(opportunity)
-
-        startup_score = calculate_startup_score(
-
-            confidence,
-
-            opportunity_score,
-
-            100 - differentiation["score"],
-
-            competition_score,
-
-            differentiation["score"]
-
-        )
-
-        investor = calculate_investor_readiness(
+        dashboard_cards(
 
             startup_score,
 
@@ -149,47 +6,82 @@ if analyze:
 
             competition_score,
 
-            differentiation["score"]
+            investor
 
         )
 
-        business_models = suggest_business_models(
+        row1 = st.columns(2)
 
-            domain
+        with row1[0]:
+
+            domain_card(
+
+                domain,
+
+                confidence
+
+            )
+
+        with row1[1]:
+
+            target_customer_card(
+
+                summary
+
+            )
+
+        st.divider()
+
+        competitor_cards(
+
+            categorized
 
         )
 
-        swot = generate_swot(
+        st.divider()
 
-            gaps,
+        row2 = st.columns(2)
 
-            len(categorized["Direct"]) +
-            len(categorized["Indirect"])
+        with row2[0]:
 
-        )
+            market_gap_card(
 
-        risk = analyse_risk(
+                gaps
 
-            {
+            )
 
-                "startup_score": startup_score
+        with row2[1]:
 
-            }
+            business_model_cards(
 
-        )
+                business_models
 
-        verdict = generate_verdict(
+            )
 
-            startup_score,
+        st.divider()
 
-            competition_score,
+        row3 = st.columns(2)
 
-            opportunity_score,
+        with row3[0]:
 
-            gaps,
+            swot_grid(
 
-            investor["score"],
+                swot
 
-            differentiation["score"]
+            )
+
+        with row3[1]:
+
+            risk_card(
+
+                risk
+
+            )
+
+        st.divider()
+
+        verdict_card(
+
+            verdict
 
         )
