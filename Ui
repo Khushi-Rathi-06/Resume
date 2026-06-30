@@ -1,219 +1,136 @@
-import streamlit as st
-
-
-def load_css():
-
-    st.markdown("""
-    <style>
-
-    .stApp{
-        background:#F8FAFC;
-    }
-
-    .main .block-container{
-        max-width:1250px;
-        padding-top:1.5rem;
-        padding-bottom:2rem;
-    }
-
-    h1,h2,h3,h4,h5{
-
-        color:#111827;
-
-    }
-
-    p{
-
-        color:#64748B;
-
-    }
-
-    .hero{
-
-        text-align:center;
-        margin-bottom:30px;
-
-    }
-
-    .hero-title{
-
-        font-size:52px;
-
-        font-weight:700;
-
-        color:#111827;
-
-        margin-bottom:0;
-
-    }
-
-    .hero-sub{
-
-        font-size:20px;
-
-        color:#6C63FF;
-
-        margin-top:0;
-
-    }
-
-    .card{
-
-        background:white;
-
-        border:1px solid #E2E8F0;
-
-        border-radius:16px;
-
-        padding:20px;
-
-        margin-bottom:20px;
-
-        box-shadow:0px 4px 10px rgba(0,0,0,.05);
-
-    }
-
-    .metric-card{
-
-        background:white;
-
-        border:1px solid #E2E8F0;
-
-        border-radius:16px;
-
-        padding:22px;
-
-        text-align:center;
-
-        box-shadow:0px 4px 10px rgba(0,0,0,.05);
-
-    }
-
-    .metric-title{
-
-        color:#64748B;
-
-        font-size:16px;
-
-        margin-bottom:8px;
-
-    }
-
-    .metric-value{
-
-        font-size:34px;
-
-        font-weight:bold;
-
-        color:#6C63FF;
-
-    }
-
-    textarea{
-
-        border-radius:12px !important;
-
-    }
-
-    .stButton>button{
-
-        width:100%;
-
-        height:52px;
-
-        border:none;
-
-        border-radius:10px;
-
-        background:#6C63FF;
-
-        color:white;
-
-        font-size:18px;
-
-        font-weight:bold;
-
-    }
-
-    .stButton>button:hover{
-
-        background:#574BDB;
-
-    }
-
-    </style>
-
-    """, unsafe_allow_html=True)
-
-
-def hero():
-
-    st.markdown("""
-
-    <div class="hero">
-
-    <div class="hero-title">
-
-    🚀 StartupGuideAI
-
-    </div>
-
-    <div class="hero-sub">
-
-    From Idea to Insights
-
-    </div>
-
-    </div>
-
-    """, unsafe_allow_html=True)
-
-
-def idea_box():
-
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-
-    idea = st.text_area(
-
-        "💡 Describe Your Startup Idea",
-
-        placeholder="Example : AI Interview Preparation Platform",
-
-        height=170
-
-    )
-
-    analyze = st.button(
-
-        "🚀 Analyze Startup",
-
-        use_container_width=True
-
-    )
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    return idea, analyze
-
-
-def metric_card(title,value):
+def domain_card(domain, confidence):
 
     st.markdown(f"""
+    <div class="card">
 
-    <div class="metric-card">
+    <h3>🏷 Domain</h3>
 
-        <div class="metric-title">
+    <h2 style="color:#6C63FF;margin-bottom:10px;">
+    {domain}
+    </h2>
 
-        {title}
+    <p><b>Confidence :</b> {confidence:.2f}%</p>
 
-        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
-        <div class="metric-value">
 
-        {value}
+def target_customer_card(summary):
 
-        </div>
+    summary = summary.lower()
+
+    customers = []
+
+    if "student" in summary:
+        customers.append("🎓 Students")
+
+    if "college" in summary:
+        customers.append("🏫 College Students")
+
+    if "job" in summary:
+        customers.append("💼 Job Seekers")
+
+    if "business" in summary:
+        customers.append("🏢 Businesses")
+
+    if "startup" in summary:
+        customers.append("🚀 Startup Founders")
+
+    if "company" in summary:
+        customers.append("🏭 Companies")
+
+    if len(customers) == 0:
+        customers.append("👥 General Users")
+
+    html = """
+
+    <div class="card">
+
+    <h3>👥 Target Customers</h3>
+
+    <ul>
+
+    """
+
+    for user in customers:
+
+        html += f"<li>{user}</li>"
+
+    html += """
+
+    </ul>
 
     </div>
 
-    """, unsafe_allow_html=True)
+    """
+
+    st.markdown(html, unsafe_allow_html=True)
+
+
+def market_gap_card(gaps):
+
+    html = """
+
+    <div class="card">
+
+    <h3>🎯 Market Gaps</h3>
+
+    <ul>
+
+    """
+
+    for gap in gaps:
+
+        html += f"<li>{gap}</li>"
+
+    html += """
+
+    </ul>
+
+    </div>
+
+    """
+
+    st.markdown(html, unsafe_allow_html=True)
+
+
+def competitor_cards(categorized):
+
+    st.markdown("## 🏆 Top Competitors")
+
+    for category in ["Direct","Indirect","Adjacent"]:
+
+        if len(categorized[category]) == 0:
+            continue
+
+        st.markdown(f"### {category}")
+
+        cols = st.columns(2)
+
+        index = 0
+
+        for company in categorized[category][:4]:
+
+            with cols[index % 2]:
+
+                st.markdown(f"""
+
+                <div class="card">
+
+                <h4>{company['name']}</h4>
+
+                <p><b>Similarity :</b> {company['score']:.1f}%</p>
+
+                <p><b>Industry :</b> {company['industry']}</p>
+
+                <p><b>Sub Industry :</b> {company['subindustry']}</p>
+
+                <hr>
+
+                <p>{company['description']}</p>
+
+                </div>
+
+                """, unsafe_allow_html=True)
+
+            index += 1
