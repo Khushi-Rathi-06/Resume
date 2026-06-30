@@ -1,34 +1,31 @@
-def idea_box():
+I already have the backend working.
 
-    st.markdown(
-        '<div class="section-title">Describe Your Startup Idea</div>',
-        unsafe_allow_html=True
-    )
+Do NOT change backend logic.
 
-    idea = st.text_area(
-        "",
-        placeholder="""
-Example:
+Only redesign the frontend (Streamlit + CSS).
 
-AI powered interview preparation platform for college students
-that provides mock interviews, resume analysis and personalized
-learning roadmap.
-        """,
-        height=110,
-        label_visibility="collapsed"
-    )
+Whenever I send code, preserve all function calls, variable names, imports and outputs.
 
-    st.write("")
+Only improve UI and layout.
 
-    c1, c2, c3 = st.columns([2.2, 1, 2.2])
+Reply "Ready".
 
-    with c2:
-        analyze = st.button(
-            "Analyze Startup",
-            use_container_width=True
-        )
 
-    st.write("")
-    st.write("")
 
-    return idea, analyze
+Create a premium SaaS UI inspired by Notion, Stripe, Vercel and Linear.
+
+Requirements:
+- White premium theme
+- Very bold hero title
+- Modern typography
+- Sidebar navigation
+- Dashboard layout
+- Charts integrated
+- SWOT 2×2 grid
+- USP and Market Gap side by side
+- Business models in one horizontal row
+- Competitors in clean cards
+- No emojis
+- No raw HTML printed
+- Responsive
+- Only edit ui.py
