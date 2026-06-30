@@ -1,211 +1,195 @@
-def dashboard_cards(
-    startup_score,
-    opportunity_score,
-    competition_score,
-    investor
-):
+import streamlit as st
 
-    st.markdown("## 📊 Dashboard")
+from ui import (
+    load_css,
+    hero,
+    idea_box,
+    dashboard_cards,
+    domain_card,
+    target_customer_card,
+    market_gap_card,
+    competitor_cards,
+    business_model_cards,
+    risk_card,
+    swot_grid,
+    verdict_card
+)
 
-    row1 = st.columns(2)
+st.set_page_config(
+    page_title="StartupGuideAI",
+    page_icon="🚀",
+    layout="wide"
+)
 
-    with row1[0]:
-        metric_card(
-            "⭐ Startup Score",
-            f"{startup_score:.1f}/100"
+load_css()
+
+hero()
+
+idea, analyze = idea_box()
+
+if analyze:
+
+    if idea.strip() == "":
+
+        st.warning("Please enter your startup idea.")
+
+        st.stop()
+
+    with st.spinner("Analyzing Startup..."):
+
+        summary = generate_summary(idea)
+
+        domain_result = detect_domain(summary)
+
+        domain = domain_result["domain"]
+
+        confidence = domain_result["confidence"]
+
+        competitor = find_similar_startups(summary)
+
+        competitor_data = []
+
+        for company, score, desc, industry, subindustry in zip(
+
+            competitor["Competitors"],
+
+            competitor["Scores"],
+
+            competitor["Descriptions"],
+
+            competitor["Industries"],
+
+            competitor["Subindustries"]
+
+        ):
+
+            competitor_data.append({
+
+                "name": company,
+
+                "score": score,
+
+                "description": desc,
+
+                "industry": industry,
+
+                "subindustry": subindustry
+
+            })
+
+        categorized = categorize_competitors(
+
+            competitor_data,
+
+            domain
+
         )
 
-    with row1[1]:
-        metric_card(
-            "🚀 Opportunity",
-            f"{opportunity_score:.1f}/100"
+        differentiation = calculate_differentiation(
+
+            summary,
+
+            competitor["Descriptions"]
+
         )
 
-    row2 = st.columns(2)
+        competition_score = differentiation["average_similarity"]
 
-    with row2[0]:
-        metric_card(
-            "⚔ Competition",
-            f"{competition_score:.1f}%"
+        gaps = identify_market_gap(
+
+            summary,
+
+            competitor["Descriptions"]
+
         )
 
-    with row2[1]:
-        metric_card(
-            "💰 Investor Ready",
-            investor["status"]
+        gap_analysis = explain_market_gap(
+
+            summary,
+
+            competitor["Competitors"],
+
+            gaps
+
         )
 
+        opportunity = calculate_opportunity(
 
-def business_model_cards(models):
+            differentiation["score"],
 
-    st.markdown("## 💼 Business Models")
+            confidence,
 
-    cols = st.columns(2)
+            competition_score,
 
-    i = 0
+            len(gaps)
 
-    for model in models:
-
-        with cols[i % 2]:
-
-            if isinstance(model, dict):
-
-                business = model.get(
-                    "Business Model",
-                    "Business Model"
-                )
-
-                revenue = model.get(
-                    "Revenue Model",
-                    "-"
-                )
-
-                st.markdown(f"""
-
-                <div class="card">
-
-                <h4>{business}</h4>
-
-                <hr>
-
-                <b>Revenue Model</b>
-
-                <p>{revenue}</p>
-
-                </div>
-
-                """, unsafe_allow_html=True)
-
-            else:
-
-                st.markdown(f"""
-
-                <div class="card">
-
-                <h4>{model}</h4>
-
-                </div>
-
-                """, unsafe_allow_html=True)
-
-        i += 1
-
-
-def risk_card(risk):
-
-    st.markdown("## ⚠ Risk Analysis")
-
-    if isinstance(risk, dict):
-
-        html = """
-
-        <div class="card">
-
-        """
-
-        for key, value in risk.items():
-
-            html += f"""
-
-            <p>
-
-            <b>{key.title()}</b>
-
-            <br>
-
-            {value}
-
-            </p>
-
-            """
-
-        html += "</div>"
-
-        st.markdown(
-            html,
-            unsafe_allow_html=True
         )
 
-    else:
+        opportunity_score = float(opportunity)
 
-        st.markdown(f"""
+        startup_score = calculate_startup_score(
 
-        <div class="card">
+            confidence,
 
-        {risk}
+            opportunity_score,
 
-        </div>
+            100 - differentiation["score"],
 
-        """, unsafe_allow_html=True)
+            competition_score,
 
+            differentiation["score"]
 
-def swot_grid(swot):
+        )
 
-    st.markdown("## 📊 SWOT Analysis")
+        investor = calculate_investor_readiness(
 
-    c1, c2 = st.columns(2)
+            startup_score,
 
-    with c1:
+            opportunity_score,
 
-        st.markdown("### 💪 Strengths")
+            competition_score,
 
-        st.markdown('<div class="card">', unsafe_allow_html=True)
+            differentiation["score"]
 
-        for item in swot["Strengths"]:
-            st.write("✅", item)
+        )
 
-        st.markdown("</div>", unsafe_allow_html=True)
+        business_models = suggest_business_models(
 
-        st.markdown("### 🚀 Opportunities")
+            domain
 
-        st.markdown('<div class="card">', unsafe_allow_html=True)
+        )
 
-        for item in swot["Opportunities"]:
-            st.write("📈", item)
+        swot = generate_swot(
 
-        st.markdown("</div>", unsafe_allow_html=True)
+            gaps,
 
-    with c2:
+            len(categorized["Direct"]) +
+            len(categorized["Indirect"])
 
-        st.markdown("### ⚠ Weaknesses")
+        )
 
-        st.markdown('<div class="card">', unsafe_allow_html=True)
+        risk = analyse_risk(
 
-        for item in swot["Weaknesses"]:
-            st.write("❌", item)
+            {
 
-        st.markdown("</div>", unsafe_allow_html=True)
+                "startup_score": startup_score
 
-        st.markdown("### 🔥 Threats")
+            }
 
-        st.markdown('<div class="card">', unsafe_allow_html=True)
+        )
 
-        for item in swot["Threats"]:
-            st.write("⚠️", item)
+        verdict = generate_verdict(
 
-        st.markdown("</div>", unsafe_allow_html=True)
+            startup_score,
 
+            competition_score,
 
-def verdict_card(verdict):
+            opportunity_score,
 
-    st.markdown("## ✅ Final Verdict")
+            gaps,
 
-    st.markdown(
-        '<div class="card">',
-        unsafe_allow_html=True
-    )
+            investor["score"],
 
-    if isinstance(verdict, list):
+            differentiation["score"]
 
-        for point in verdict:
-
-            st.write("✔", point)
-
-    else:
-
-        st.write(verdict)
-
-    st.markdown(
-        "</div>",
-        unsafe_allow_html=True
-    )
+        )
