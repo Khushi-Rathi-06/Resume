@@ -1,132 +1,106 @@
-st.markdown("""
-<style>
+    st.markdown("""
+    <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-html, body, [class*="css"], .stApp{
-    font-family:'Inter',sans-serif;
-    background:#F7F8FA;
-    color:#111827;
-}
+    html, body, [class*="css"], .stApp{
+        font-family:'Inter',sans-serif;
+        background:#F7F8FA;
+        color:#111827;
+    }
 
-.main .block-container{
-    max-width:1250px;
-    padding-top:2rem;
-    padding-bottom:4rem;
-}
+    .main .block-container{
+        max-width:1250px;
+        padding-top:2rem;
+        padding-bottom:4rem;
+    }
 
-h1,h2,h3,h4,h5,h6{
-    color:#111827;
-    font-weight:700;
-}
+    h1,h2,h3,h4,h5,h6{
+        color:#111827;
+        font-weight:700;
+    }
 
-/* Hide Streamlit branding */
+    #MainMenu{
+        visibility:hidden;
+    }
 
-#MainMenu{
-    visibility:hidden;
-}
+    footer{
+        visibility:hidden;
+    }
 
-footer{
-    visibility:hidden;
-}
+    header{
+        visibility:hidden;
+    }
 
-header{
-    visibility:hidden;
-}
+    .hero{
+        text-align:center;
+        padding:70px 0 55px 0;
+    }
 
-/* Hero */
+    .hero-title{
+        font-size:68px;
+        font-weight:800;
+        letter-spacing:-2px;
+        color:#111827;
+    }
 
-.hero{
-    text-align:center;
-    padding:70px 0 55px 0;
-}
+    .hero-sub{
+        margin-top:10px;
+        font-size:22px;
+        color:#6B7280;
+        font-weight:400;
+    }
 
-.hero-title{
-    font-size:68px;
-    font-weight:800;
-    letter-spacing:-2px;
-    color:#111827;
-}
+    .section-title{
+        font-size:32px;
+        font-weight:700;
+        margin-top:25px;
+        margin-bottom:18px;
+        color:#111827;
+    }
 
-.hero-sub{
-    margin-top:10px;
-    font-size:22px;
-    color:#6B7280;
-    font-weight:400;
-}
+    .card{
+        background:white;
+        border:1px solid #E5E7EB;
+        border-radius:18px;
+        padding:22px;
+        box-shadow:0 3px 12px rgba(0,0,0,.05);
+        margin-bottom:18px;
+    }
 
-/* Section */
+    .metric-title{
+        font-size:15px;
+        color:#6B7280;
+        margin-bottom:12px;
+    }
 
-.section-title{
-    font-size:32px;
-    font-weight:700;
-    margin-top:25px;
-    margin-bottom:18px;
-    color:#111827;
-}
+    .metric-value{
+        font-size:42px;
+        font-weight:800;
+        color:#111827;
+    }
 
-/* Cards */
+    textarea{
+        border-radius:14px !important;
+        border:1px solid #D1D5DB !important;
+    }
 
-.card{
-    background:white;
-    border:1px solid #E5E7EB;
-    border-radius:18px;
-    padding:22px;
-    box-shadow:0 3px 12px rgba(0,0,0,.05);
-    margin-bottom:18px;
-}
+    .stButton>button{
+        width:220px;
+        display:block;
+        margin:auto;
+        background:#2563EB;
+        color:white;
+        border:none;
+        border-radius:12px;
+        height:50px;
+        font-size:17px;
+        font-weight:600;
+    }
 
-/* Metric Card */
+    .stButton>button:hover{
+        background:#1D4ED8;
+    }
 
-.metric-title{
-    font-size:15px;
-    color:#6B7280;
-    margin-bottom:12px;
-}
-
-.metric-value{
-    font-size:42px;
-    font-weight:800;
-    color:#111827;
-}
-
-/* Text Area */
-
-textarea{
-    border-radius:14px !important;
-    border:1px solid #D1D5DB !important;
-}
-
-/* Button */
-
-.stButton>button{
-
-    width:220px;
-
-    display:block;
-
-    margin:auto;
-
-    background:#2563EB;
-
-    color:white;
-
-    border:none;
-
-    border-radius:12px;
-
-    height:50px;
-
-    font-size:17px;
-
-    font-weight:600;
-}
-
-.stButton>button:hover{
-
-    background:#1D4ED8;
-
-}
-
-</style>
-""", unsafe_allow_html=True)
+    </style>
+    """, unsafe_allow_html=True)
